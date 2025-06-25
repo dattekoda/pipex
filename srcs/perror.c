@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 09:35:01 by khanadat          #+#    #+#             */
-/*   Updated: 2025/06/25 09:39:19 by khanadat         ###   ########.fr       */
+/*   Created: 2025/06/25 02:27:46 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/25 04:39:06 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,14 @@
 
 int	main(int argc, char *argv[])
 {
-	
+	int	fd;
+
+	fd = open("test.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		perror("failed open");
+		return (1);
+	}
+	close(fd);
+	return (0);
 }

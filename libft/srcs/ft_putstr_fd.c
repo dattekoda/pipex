@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 09:35:01 by khanadat          #+#    #+#             */
-/*   Updated: 2025/06/25 09:39:19 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/28 05:06:22 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:32:28 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/libft.h"
 
-int	main(int argc, char *argv[])
+void	ft_putstr_fd(char *s, int fd)
 {
-	
+	while (*s)
+		ft_putchar_fd(*s++, fd);
 }

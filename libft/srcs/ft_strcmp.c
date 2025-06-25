@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 09:35:01 by khanadat          #+#    #+#             */
-/*   Updated: 2025/06/25 09:39:19 by khanadat         ###   ########.fr       */
+/*   Created: 2025/06/21 04:19:21 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:32:34 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/libft.h"
 
-int	main(int argc, char *argv[])
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	
+	return (ft_strncmp(s1, s2, INT_MAX));
 }

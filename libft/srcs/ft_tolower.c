@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 09:35:01 by khanadat          #+#    #+#             */
-/*   Updated: 2025/06/25 09:39:19 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/25 11:48:56 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:32:59 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/libft.h"
 
-int	main(int argc, char *argv[])
+int	ft_tolower(int c)
 {
-	
+	if ('A' <= c && c <= 'Z')
+		c += 32;
+	return (c);
 }
