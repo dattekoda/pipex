@@ -5,10 +5,11 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "../libft/includes/libft.h"
-#define BUFSIZE 42
-#define READ_ERROR -2
-#define FAILURE 1
-#define SUCCESS 0
+# define BUFSIZE 42
+# define READ_ERROR -2
+# define FAILURE 1
+# define SUCCESS 0
+# define BINLEN 5
 
 typedef struct s_data
 {
@@ -24,7 +25,10 @@ typedef struct s_string
 	size_t	len;
 }	t_string;
 
-int	ft_getchar(int fd);
-int	ft_putc(t_string *s, char c);
+int		ft_getchar(int fd);
+int		ft_putc(t_string *s, char c);
+void	free_split(char **split);
+char	**get_command(char *str, char *add, int c);
+char	*get_path(char *command);
 
 #endif

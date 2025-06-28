@@ -6,6 +6,5 @@ int	main(void)
 	char *envp[] = { NULL };
 
 	execve("/bin/ls", argv, envp);
-
 	return (0);
 }
