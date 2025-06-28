@@ -1,7 +1,7 @@
 NAME	:= pipex
 CC		:= cc
 CFLAGS	:= -Wall -Wextra -Werror
-AR		:= ar rcs
+AR		:= ar -rcs
 RM		:= rm -f
 
 SRC		:=	srcs/main.c
