@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 09:35:01 by khanadat          #+#    #+#             */
-/*   Updated: 2025/06/25 09:39:19 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/06/27 08:16:54 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 int	main(int argc, char *argv[])
 {
-	
+	if (argc != 3)
+		return ()
 }

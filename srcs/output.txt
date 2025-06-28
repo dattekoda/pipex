@@ -1,1 +1,21 @@
-Hello file!
+total 280
+-rwxr-xr-x@ 1 khanadat  staff  33640  6 27 08:01 a.out
+-rw-r--r--@ 1 khanadat  staff    277  6 27 06:23 access.c
+-rw-r--r--@ 1 khanadat  staff    973  6 25 07:56 cmd.c
+-rw-r--r--@ 1 khanadat  staff    636  6 26 05:04 dup.c
+-rw-r--r--@ 1 khanadat  staff    203  6 25 08:11 envp.c
+-rw-r--r--@ 1 khanadat  staff    150  6 25 06:05 execve.c
+-rw-r--r--@ 1 khanadat  staff    207  6 26 05:16 fflush.c
+-rw-r--r--@ 1 khanadat  staff    256  6 26 05:18 fflush2.c
+-rw-r--r--@ 1 khanadat  staff    511  6 25 06:46 fork.c
+-rw-r--r--@ 1 khanadat  staff     34  6 27 08:07 input.txt
+-rw-r--r--@ 1 khanadat  staff    988  6 27 08:04 main.c
+-rwxr-xr-x@ 1 khanadat  staff      0  6 27 08:08 output.txt
+-rw-r--r--@ 1 khanadat  staff   1089  6 25 04:39 perror.c
+-rw-r--r--@ 1 khanadat  staff    580  6 25 07:43 pipe.c
+-rwxr-xr-x@ 1 khanadat  staff  33560  6 26 04:45 printf
+-rw-r--r--@ 1 khanadat  staff    100  6 26 04:44 printf.c
+-rw-r--r--@ 1 khanadat  staff    101  6 26 05:21 progress.log
+-rw-r--r--@ 1 khanadat  staff    227  6 25 06:17 strerror.c
+-rw-r--r--@ 1 khanadat  staff    139  6 25 08:52 unlink.c
+-rw-r--r--@ 1 khanadat  staff    303  6 25 09:08 wait.c
