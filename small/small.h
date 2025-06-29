@@ -4,31 +4,25 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "../libft/includes/libft.h"
-# define BUFSIZE 42
-# define READ_ERROR -2
 # define FAILURE 1
 # define SUCCESS 0
 # define BINLEN 5
 
-typedef struct s_data
+typedef struct s_cmd
 {
-	char	buf[BUFSIZE];
-	char	*bufp;
-	int		n;
-}	t_data;
+	char	**args1;
+	char	*path1;
+	char	**args2;
+	char	*path2;
+}	t_cmd;
 
-typedef struct s_string
-{
-	char	*str;
-	size_t	capa;
-	size_t	len;
-}	t_string;
-
-int		ft_getchar(int fd);
-int		ft_putc(t_string *s, char c);
+void	free_cmd(t_cmd *cmd);
 void	free_split(char **split);
-char	**get_command(char *str, char *add, int c);
-char	*get_path(char *command);
+// char	**join_cmd_operand(char *cmd, char *operand);
+char	*get_path(char *cmdline, char **envp);
+int		command(t_cmd *cmd, char *argv[], char *envp[]);
 
 #endif

@@ -4,7 +4,7 @@ CCFLAGS := -Wall -Wextra -Werror
 AR := ar rcs
 RM := rm -f
 
-SRCS := main.c utility.c getchar.c
+SRCS := main.c utility.c get_path.c command.c
 
 OBJS := $(SRCS:.c=.o)
 
@@ -20,9 +20,6 @@ $(NAME): $(OBJS) $(LIBFT_A)
 
 $(LIBFT_A):
 	$(MAKE) -C $(LIBFT_DIR)
-
-# %.o: %.cc
-# 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)

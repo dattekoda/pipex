@@ -10,38 +10,33 @@ void	free_split(char **split)
 	free(split);
 }
 
-char	**get_command(char *str, char *add, int c)
+// char	**join_cmd_operand(char *cmd, char *operand)
+// {
+// 	char	**list;
+// 	char	*new;
+// 	char	*_new;
+// 	size_t	total_len;
+// 	size_t	len2;
+
+// 	_new = ft_strjoin(cmd, " ");
+// 	new = ft_strjoin(_new, operand);
+// 	free(_new);
+// 	list = ft_split(new, ' ');
+// 	free(new);
+// 	if (!list)
+// 		return (perror("ft_split"), NULL);
+// 	return (list);
+// }
+
+void	free_cmd(t_cmd *cmd)
 {
-	char	**list;
-	char	*new;
-	size_t	total_len;
-	size_t	len2;
-
-	len2 = ft_strlen(str);
-	total_len = ft_strlen(add) + len2 + 2;
-	new = ft_calloc(total_len, sizeof(char));
-	if (!new)
-		return (perror("ft_calloc"), NULL);
-	ft_memcpy(new, str, len2);
-	ft_strlcat(new, " ", total_len);
-	ft_strlcat(new, add, total_len);
-	list = ft_split(new, c);
-	free(new);
-	if (!list)
-		return (perror("ft_split"), NULL);
-	return (list);
-}
-
-char	*get_path(char *command)
-{
-	char	*path;
-	size_t	path_len;
-
-	path_len = BINLEN + ft_strlen(command) + 1;
-	path = ft_calloc(path_len, sizeof(char));
-	if (!path)
-		return (NULL);
-	ft_memcpy(path, "/bin/", 5);
-	ft_strlcat(path, command, path_len);
-	return (path);
+	if (cmd->args1)
+		free_split(cmd->args1);
+	if (cmd->args2)
+		free_split(cmd->args2);
+	if (cmd->path1)
+		free(cmd->path1);
+	if (cmd->path2)
+		free(cmd->path2);
+	free(cmd);
 }
