@@ -9,20 +9,18 @@ int	command(t_cmd *cmd, char *argv[], char *envp[])
 	pid_t	pid2;
 
 	if (pipe(pipefd) < 0)
-		perror("pipe")
+		perror("pipe");
 	pid1 = fork();
 	if (pid1 == 0)
 	{
 		in_fd = open(argv[1], O_RDONLY);
 		if (in_fd < 0)
-			return (perror("no such file")
-				, close(pipefd[0]), close(pipefd[1])
-				, free(cmd), exit(FAILURE), 1);
+			exit((close(pipefd[0]), close(pipefd[1]), EXIT_FAILURE));
 		dup2(in_fd, STDIN_FILENO);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[0]);
 		if (execve(cmd->path1, cmd->args1, envp) < 0)
-			return (close(pipefd[1]), 1);
+			exit((close(pipefd[1]), EXIT_FAILURE));
 	}
 	pid2 = fork();
 	if (pid2 == 0)
@@ -32,7 +30,7 @@ int	command(t_cmd *cmd, char *argv[], char *envp[])
 		dup2(out_fd, STDOUT_FILENO);
 		close(pipefd[1]);
 		if (execve(cmd->path2, cmd->args2, envp) < 0)
-			return (close(pipefd[0]), 1);
+			exit((close(pipefd[0]), EXIT_FAILURE));
 	}
 	close(pipefd[0]);
 	close(pipefd[1]);
