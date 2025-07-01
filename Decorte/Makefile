@@ -1,9 +1,11 @@
-NAME := small
+NAME := pipex
 CC := cc
 CCFLAGS := -Wall -Wextra -Werror
 RM := rm -f
+INC := includes/pipex.h
 
-SRCS := main.c utility.c get_path.c command.c
+SRCS := srcs/childs.c srcs/error.c \
+		srcs/free.c srcs/pipex.c
 
 OBJS := $(SRCS:.c=.o)
 
@@ -15,7 +17,7 @@ LIBFT_A := $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_A)
-	$(CC) $(CCFLAGS) $(OBJS) $(LIBFT_A) -I small.h -o $@
+	$(CC) $(CCFLAGS) $(OBJS) $(LIBFT_A) -I $(INC) -o $@
 
 $(LIBFT_A):
 	$(MAKE) -C $(LIBFT_DIR)

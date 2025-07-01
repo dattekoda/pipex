@@ -1,5 +1,6 @@
 {
 	"files.associations": {
-		"small.h": "c"
+		"small.h": "c",
+		"pipex.h": "c"
 	}
 }
