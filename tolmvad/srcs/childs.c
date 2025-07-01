@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 09:05:37 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/01 11:33:47 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:01:11 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_path(t_pipex pipex)
 	cmd = pipex.cmd_args[0];
 	while (pipex.cmd_paths[++i])
 	{
-		tmp = ft_strjoin(*(pipex.cmd_paths), "/");
+		tmp = ft_strjoin(pipex.cmd_paths[i], "/");
 		if (!tmp)
 			break ;
 		path = ft_strjoin(tmp, cmd);

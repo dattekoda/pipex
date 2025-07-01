@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 09:00:42 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/01 11:31:50 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:12:22 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	**find_paths(char *envp[])
 
 	while (ft_strncmp("PATH=", *envp, 5))
 		envp++;
-	paths = ft_split(*envp + 5 ,':');
+	paths = ft_split(*envp + 5, ':');
 	return (paths);
 }
 

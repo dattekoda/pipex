@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   error_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 10:20:38 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/01 10:52:04 by khanadat         ###   ########.fr       */
+/*   Created: 2025/07/01 09:35:00 by khanadat          #+#    #+#             */
+/*   Updated: 2025/07/01 13:25:15 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/pipex_bonus.h"
 
-void	free_split(char *argv[])
+int	msg(char *err)
 {
-	while (*argv)
-		free(*argv++);
-	free(argv);
+	ft_putstr_fd(err, STDERR_FILENO);
+	return (FAILURE);
 }
 
-void	parent_free(t_pipex *pipex)
+void	msg_error(char *err)
 {
-	close(pipex->infile);
-	close(pipex->outfile);
-	free_split(pipex->cmd_paths);
-}
-
-void	child_free(t_pipex *pipex)
-{
-	free_split(pipex->cmd_args);
+	perror(err);
+	exit (EXIT_FAILURE);
 }
