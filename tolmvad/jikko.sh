@@ -1,1 +1,0 @@
-find srcs/*.c | entr -rs "make re && ./pipex Makefile \"cat\" \"wc -w\" outfile && cat outfile"
