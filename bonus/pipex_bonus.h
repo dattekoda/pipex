@@ -8,7 +8,7 @@
 
 typedef struct s_cmd
 {
-	char	**av;
+	char	**argv;
 	char	*path;
 }	t_cmd;
 

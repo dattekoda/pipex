@@ -24,16 +24,20 @@ int	pipex_init(t_pipex *px, int ac, char *av[], char *ep[])
 	// if モードhear_doc
 		//mode = 1
 		//cmd_count = argc - 4
-		//limiter = get_next_lineでテキストを取得
+		//limiter = argv[2] これがくるまでget_next_line
 		//here_doc_input()
 	
-	//失敗時はfree_pipex()を
+	//失敗時はfree_pipex()をしたのちにerror_exit()
 }
 
 int	parse_commands(t_pipex *px, char *av[], int first_cmd_i)
 {
 	//px->cmds[k]にargvを格納
-	//index k: first_cmd_iからcmd_countでavからpx->cmds[k]にデータを格納
+	//index k: first_cmd_iからcmd_countでavからpx->cmds.av[k]にデータを格納
+
+	//first_cmd_iはNORMAL=2 HERE_DOC=3
+	//cmds[k].argv = ft_split(argv[first_cmd_i + k], ' ')
+	//cmd[k].pathは未定義
 }
 
 int	resolve_path(t_cmd *cmd, char *ep[])
@@ -85,26 +89,47 @@ void	select_fd(const t_pipex *px, int idx)
 void	child_exec(t_pipex *px, int idx)
 {
 	//dup2, execveを失敗時にerror_exit
+	
+	//select_fd();
+	//resolve_path(&px->cmd[idx], px->envp)
+	//execve(cmd.path[idx], cmd.av[idx + mode + 2], px-_envp)
+	//失敗→error_exit(px, "execve");
 }
 
 int	launch_children(t_pipex *px)
 {
 	//初期化済みpxが与えられる
-	//forkをN回、各子でchild_exec()
+	//forkをcmd_count回、各子でchild_exec()
+
+	//cmd_count回だけfork
+	//親pids[idx] = pidのときは続行
+	//child_exec()→戻らない
+	//いずれかのforkで失敗したとき→error_exit(px, "fork")
 }
 
 int	wait_children(t_pipex *px)
 {
 	//px->pidsを使う
 	//全子をwaitpid、最後の子のstatusを返す
+
+	//for k 0, 1, ... cmd_count - 1: waitpid(pid[k], &st, 0);
+	//戻り値はWIFEXIT(st) ? WEXITSTATUS(st) : EXIT_FAILURE
 }
 
 void	free_pipex(t_pipex *px)
 {
 	//動的領域を全部開放した後、closeも行う
+
+	//すべての未開放FDをclose()
+	//for each pipes[i] free(pipes[i]), free(pipes)
+	//for each cmd free(cmd.argv, cmd.path);
+	//その他ヒープ領域をfree
 }
 
 void	error_exit(t_pipex *px, char *msg)
 {
 	//perror(msg)→free_pipex()→exit(EXIT_FAILURE)
+	perror(msg);
+	free_pipex(px);
+	exit(EXIT_FAILURE);
 }
