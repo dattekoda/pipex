@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 12:54:02 by khanadat          #+#    #+#             */
-/*   Updated: 2025/06/27 09:18:02 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:40:38 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 #define BUFFER_SIZE 42
 
 static char	*for_stash(int fd, char *stash, char *buf, ssize_t *byte)
