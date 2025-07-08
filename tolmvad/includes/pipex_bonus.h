@@ -7,6 +7,8 @@
 # include "../../libft/includes/libft.h"
 
 # define ERR_INPUT "Invalid number of arguments.\n"
+# define ERR_INFILE "Infile"
+# define ERR_HEREDOC "here_doc"
 
 typedef struct s_ppxb
 {
@@ -32,5 +34,9 @@ void	parent_free(t_ppxb *pipex);
 
 //here_doc_bonus.c
 int	args_in(char *arg, t_ppxb *pipex);
+
+//error_bonus.c
+int		msg(char *err);
+void	msg_error(char *err);
 
 #endif
