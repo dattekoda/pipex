@@ -18,3 +18,27 @@ void	parent_free(t_ppxb *pipex)
 	free(pipex->pipe);
 }
 
+void	child_free(t_ppxb *pipex)
+{
+	int	i;
+
+	i = 0;
+	while (pipex->cmd_args[i])
+	{
+		free(pipex->cmd_args[i]);
+		i++;
+	}
+	free(pipex->cmd_args);
+	free(pipex->cmd);
+}
+
+void	pipe_free(t_ppxb *pipex)
+{
+	close(pipex->infile);
+	close(pipex->outfile);
+	if (pipex->here_doc)
+		unlink(".heredoc_tmp");
+	free(pipex->pipe);
+	msg(ERR_ENVP);
+	exit(1);
+}
