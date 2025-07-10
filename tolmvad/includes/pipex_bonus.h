@@ -8,6 +8,7 @@
 
 # define ERR_INPUT "Invalid number of arguments.\n"
 # define ERR_INFILE "Infile"
+# define ERR_OUTFILE "Outfile"
 # define ERR_HEREDOC "here_doc"
 
 typedef struct s_ppxb

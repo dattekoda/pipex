@@ -33,5 +33,4 @@ int	main(int argc, char *argv[], char *envp[])
 		return (msg(ERR_INPUT));
 	get_infile(argv, &pipex);
 	get_outfile(argv[argc - 1], &pipex);
-	
 }

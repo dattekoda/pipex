@@ -1,6 +1,6 @@
 #include "../includes/pipex_bonus.h"
 
-void	*get_infile(char **argv, t_ppxb *pipex)
+void	get_infile(char **argv, t_ppxb *pipex)
 {
 	if (!ft_strncmp("here_doc", argv[1], 9))
 		here_doc(argv[2], pipex);
@@ -10,4 +10,15 @@ void	*get_infile(char **argv, t_ppxb *pipex)
 		if (pipex->infile < 0)
 			msg_error(ERR_INFILE);
 	}
+}
+
+void	get_outfile(char *argv, t_ppxb *pipex)
+{
+	if (pipex->here_doc)
+		pipex->outfile = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0000644);
+	else
+		pipex->outfile = open(argv, O_CREAT | O_RDWR | O_TRUNC, 0000644);
+	if (pipex->outfile < 0)
+		msg_error(ERR_OUTFILE);
+	
 }
