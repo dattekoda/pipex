@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/11 10:50:06 by khanadat          #+#    #+#             */
+/*   Updated: 2025/07/11 10:50:07 by khanadat         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PIPEX_BONUS_H
 # define PIPEX_BONUS_H
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "../../libft/includes/libft.h"
 
 # define ERR_INPUT "Invalid number of arguments.\n"
@@ -18,7 +32,6 @@ typedef struct s_ppxb
 {
 	int		infile;
 	int		outfile;
-	char	*env_path;
 	char	**cmd_paths;
 	char	*cmd;
 	char	**cmd_args;

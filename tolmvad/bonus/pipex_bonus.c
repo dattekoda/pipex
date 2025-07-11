@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/11 10:49:32 by khanadat          #+#    #+#             */
+/*   Updated: 2025/07/11 10:49:33 by khanadat         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/pipex_bonus.h"
 
 static void	creat_pipes(t_ppxb *pipex)
@@ -11,6 +23,13 @@ static void	creat_pipes(t_ppxb *pipex)
 			parent_free(pipex);
 		i++;
 	}
+}
+
+static char	**find_cmd_paths(char **envp)
+{
+	while (ft_strncmp("PATH", *envp, 4))
+		envp++;
+	return (ft_split(*envp + 5, ':'));
 }
 
 void	close_pipes(t_ppxb *pipex)
@@ -29,7 +48,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_ppxb	pipex;
 
-	if (argc < args_in(argv[1], &pipex))//here_doc:6 not:5
+	if (argc < args_in(argv[1], &pipex))
 		return (msg(ERR_INPUT));
 	get_infile(argv, &pipex);
 	get_outfile(argv[argc - 1], &pipex);
@@ -38,8 +57,7 @@ int	main(int argc, char *argv[], char *envp[])
 	pipex.pipe = (int *)malloc(sizeof(int) * pipex.pipe_nmbs);
 	if (!pipex.pipe)
 		msg_error(ERR_PIPE);
-	pipex.env_path = find_path(envp);//env_pathで格納する必要ある?
-	pipex.cmd_paths = ft_split(pipex.env_path, ':');//直接splitでも良い?
+	pipex.cmd_paths = find_cmd_paths(envp);
 	if (!pipex.cmd_paths)
 		pipe_free(&pipex);
 	creat_pipes(&pipex);

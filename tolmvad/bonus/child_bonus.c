@@ -6,13 +6,13 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 17:23:48 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/10 18:14:56 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/11 10:49:59 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex_bonus.h"
 
-static char *get_cmd(char **paths, char *cmd)
+static char	*get_cmd(char **paths, char *cmd)
 {
 	char	*tmp;
 	char	*command;
