@@ -1,4 +1,4 @@
-#include "pipex_bonus.h"
+#include "pipex.h"
 
 //プロセス起動時の3変数
 int	main(int ac, char *av[], char *ep[])
