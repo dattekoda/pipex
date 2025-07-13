@@ -16,17 +16,20 @@ typedef struct s_cmd
 
 typedef struct s_pipex
 {
-	int		here_doc;
-	int		cmd_count;
-	int		*pipes;
-	int		in_fd;
-	int		out_fd;
+	int		here_doc; //1: on 0: off
+	int		cmd_count; //here_doc :may change
+	int		*pipes; //2 * (cmd_count - 1)
+	int		*infile;
+	int		*outfile;
 	char	*limiter;
-	t_cmd	*cmd;
+	t_cmd	*cmd; //malloc
 	char	**envp;
+	char	**argv;
 	pid_t	pid;
 }	t_pipex;
 
-int	msg(char *err);
+int		msg(char *err);
+void	err_msg(char *err);
+void	init_pipex(t_pipex *px);
 
 #endif

@@ -17,5 +17,10 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc < args_num(argv[1], &px))
 		return (msg(ERR_INPUT));
+	px.envp = envp;
+	px.argv = argv;
+	init_pipex(&px);
+	// child_pipex(&px);
+	// free_pipex(&px);
 	return (0);
 }
