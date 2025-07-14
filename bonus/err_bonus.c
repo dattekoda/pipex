@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*   err_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/14 18:40:37 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/14 18:40:38 by khanadat         ###   ########.fr       */
+/*   Created: 2025/07/14 18:35:49 by khanadat          #+#    #+#             */
+/*   Updated: 2025/07/14 18:35:50 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	args_num(char *arg, t_pipex *px)
+int	msg(char *err)
 {
-	if (arg && !ft_strncmp("here_doc", arg, 9))
-	{
-		px->here_doc = 1;
-		return (6);
-	}
-	px->here_doc = 0;
-	return (5);
+	perror(err);
+	return (1);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+void	err_msg(char *err)
 {
-	t_pipex	px;
+	ft_putendl_fd(err, 2);
+	exit(1);
+}
 
-	if (argc < args_num(argv[1], &px))
-		return (msg(ERR_INPUT));
-	init_pipex(&px, argc, argv, envp);
-	child_pipex(&px);
-	return (0);
+void	exit_parent(t_pipex *px, char *err)
+{
+	free_parent(px);
+	exit(msg(err));
 }

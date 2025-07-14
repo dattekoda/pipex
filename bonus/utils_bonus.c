@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/14 18:40:37 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/14 18:40:38 by khanadat         ###   ########.fr       */
+/*   Created: 2025/07/14 16:45:57 by khanadat          #+#    #+#             */
+/*   Updated: 2025/07/14 16:49:58 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	args_num(char *arg, t_pipex *px)
+void	free_split(char **split)
 {
-	if (arg && !ft_strncmp("here_doc", arg, 9))
-	{
-		px->here_doc = 1;
-		return (6);
-	}
-	px->here_doc = 0;
-	return (5);
+	size_t	i;
+
+	i = 0;
+	while (split[i])
+		free(split[i++]);
+	free(split);
 }
 
-int	main(int argc, char *argv[], char *envp[])
-{
-	t_pipex	px;
+// int	main(void)
+// {
+// 	char	str[100] = "hello this is from khanadat";
+// 	char	**sp;
 
-	if (argc < args_num(argv[1], &px))
-		return (msg(ERR_INPUT));
-	init_pipex(&px, argc, argv, envp);
-	child_pipex(&px);
-	return (0);
-}
+// 	sp = ft_split(str, ' ');
+// 	free_split(sp);
+// 	return (0);
+// }

@@ -1,35 +1,106 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/14 18:33:34 by khanadat          #+#    #+#             */
+/*   Updated: 2025/07/14 18:39:24 by khanadat         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-static void	get_here_doc(t_pipex *px)
+static void	get_stdin(t_pipex *px, char **argv)
 {
 	char	*line;
 	int		gnl;
-	int		fd;
+	int		here_doc_fd;
 
 	gnl = 1;
-	px->limiter = px->argv[2];
-	fd = open(".here_doc", O_CREAT | O_RDWR | O_TRUNC, 0000644);
+	px->limiter = argv[2];
+	here_doc_fd = open(HERE_DOC_FILE, O_CREAT | O_RDWR | O_TRUNC, 644);
 	while (gnl > 0)
 	{
+		ft_putstr_fd("pipe heredoc> ", STDOUT_FILENO);
 		gnl = ft_get_next_line(STDIN_FILENO, &line);
 		if (gnl < 0)
 			err_msg("gnl");
 		if (!ft_strncmp(px->limiter, line, ft_strlen(px->limiter)))
 			break ;
-		write(fd, line, sizeof(line));
+		ft_putstr_fd(line, here_doc_fd);
 		free(line);
 	}
 	if (line)
 		free(line);
 }
 
-static	void get_cmds(t_pipex *px)
+static void	get_path(t_pipex *px)
 {
-	if (px->here_doc)
-		get_here_doc(px);
+	char	*path;
+	char	*tmp;
+	int		i;
+	int		j;
+
+	j = -1;
+	while (++j < px->cmds_num)
+	{
+		i = -1;
+		while (px->path_op[++i])
+		{
+			tmp = ft_strjoin(px->path_op[i], "/");
+			path = ft_strjoin(tmp, px->cmd[j].argv[0]);
+			if (!(free(tmp), access(path, X_OK)))
+			{
+				px->cmd[j].path = path;
+				break ;
+			}
+			free(path);
+		}
+		if (!px->path_op[j])
+			exit_parent(px, ERR_ACCESS);
+	}
 }
 
-void	init_pipex(t_pipex *px)
+static	void	get_cmds(t_pipex *px)
 {
+	int	i;
+
+	px->cmd = malloc(px->cmds_num * sizeof(t_cmd));
+	i = -1;
+	while (++i < px->cmds_num)
+	{
+		px->cmd[i].argv = ft_split(px->argv_cmd[i], ' ');
+		if (!px->cmd[i].argv)
+			exit_parent(px, ERR_MALLOC);
+	}
+	get_path(px);
+}
+
+static void	ready_init(t_pipex *px, int argc, char *argv[], char *envp[])
+{
+	if (px->here_doc)
+		get_stdin(px, argv);
+	px->argv_cmd = argv + px->here_doc + 2;
+	px->cmds_num = argc - 3 - px->here_doc;
+	px->pipes_size = px->cmds_num - 1;
+	while (*envp)
+	{
+		if (!ft_strncmp("PATH=", *envp, 5))
+		{
+			px->path_op = ft_split(*envp + 5, ':');
+			break ;
+		}
+		envp++;
+	}
+	px->pipes = malloc(sizeof(int) * px->pipes_size);
+	if (!px->path_op || !px->pipes)
+		exit_parent(px, ERR_MALLOC);
+}
+
+void	init_pipex(t_pipex *px, int argc, char *argv[], char *envp[])
+{
+	ready_init(px, argc, argv, envp);
 	get_cmds(px);
 }
