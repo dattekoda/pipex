@@ -7,6 +7,8 @@ int	command(t_cmd *cmd, char *argv[], char *envp[])
 	int		out_fd;
 	pid_t	pid1;
 	pid_t	pid2;
+	int		status1;
+	int		status2;
 
 	if (pipe(pipefd) < 0)
 		perror("pipe");
@@ -34,7 +36,8 @@ int	command(t_cmd *cmd, char *argv[], char *envp[])
 	}
 	close(pipefd[0]);
 	close(pipefd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	waitpid(pid1, &status1, 0);
+	waitpid(pid2, &status2, 0);
+	printf("status\n1:%d\n2:%d\n", status1, status2);
 	return (0);
 }

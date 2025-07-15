@@ -1,1 +1,1 @@
-git submodule update ../libft && make re -C ../libft && cc -Wall -Wextra -Werror *.c ../libft/libft.a && make fclean -C ../libft
+git submodule update ../libft && make re -C ../libft && cc -Wall -Wextra -Werror *.c ../libft/libft.a -o pipex && make fclean -C ../libft
