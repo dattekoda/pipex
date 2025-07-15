@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:33:34 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/14 18:39:24 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/15 09:42:21 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ static void	get_stdin(t_pipex *px, char **argv)
 {
 	char	*line;
 	int		gnl;
-	int		here_doc_fd;
 
 	gnl = 1;
 	px->limiter = argv[2];
-	here_doc_fd = open(HERE_DOC_FILE, O_CREAT | O_RDWR | O_TRUNC, 644);
+	px->in_fd = open(HERE_DOC_FILE, O_CREAT | O_RDWR | O_TRUNC, 644);
+	if (px->in_fd == -1)
+		exit(msg(ERR_OPEN));
 	while (gnl > 0)
 	{
 		ft_putstr_fd("pipe heredoc> ", STDOUT_FILENO);
@@ -29,7 +30,7 @@ static void	get_stdin(t_pipex *px, char **argv)
 			err_msg("gnl");
 		if (!ft_strncmp(px->limiter, line, ft_strlen(px->limiter)))
 			break ;
-		ft_putstr_fd(line, here_doc_fd);
+		ft_putstr_fd(line, px->in_fd);
 		free(line);
 	}
 	if (line)
@@ -82,9 +83,15 @@ static void	ready_init(t_pipex *px, int argc, char *argv[], char *envp[])
 {
 	if (px->here_doc)
 		get_stdin(px, argv);
+	else
+		px->in_fd = open(argv[1], O_RDONLY);
+	if (px->in_fd == -1)
+		exit(msg(ERR_OPEN));
+	px->argc = argc;
+	px->argv = argv;
 	px->argv_cmd = argv + px->here_doc + 2;
 	px->cmds_num = argc - 3 - px->here_doc;
-	px->pipes_size = px->cmds_num - 1;
+	px->pipes_size = 2 * (px->cmds_num - 1);
 	while (*envp)
 	{
 		if (!ft_strncmp("PATH=", *envp, 5))

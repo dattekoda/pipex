@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:20:40 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/14 18:20:33 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/15 10:23:09 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,9 @@ void	free_parent(t_pipex *px)
 		free(px->cmd);
 	}
 	unlink(HERE_DOC_FILE);
+}
+
+void	free_child(t_pipex *px)
+{
+	close_all(px);
 }

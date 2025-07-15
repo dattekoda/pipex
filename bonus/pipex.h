@@ -25,10 +25,12 @@ typedef struct s_pipex
 	int		cmds_num; //here_doc :may change
 	int		in_fd;
 	int		out_fd;
+	int		argc;
 	int		pipes_size; // 2 * (cmd_count - 1)
 	int		*pipes; //malloc
 	char	*limiter;
 	t_cmd	*cmd; //malloc
+	char	**argv;
 	char	**argv_cmd; //cmd pointer which starts
 	char	**path_op; //split
 	pid_t	pid;
@@ -38,9 +40,11 @@ typedef struct s_pipex
 int		msg(char *err);
 void	err_msg(char *err);
 void	exit_parent(t_pipex *px, char *err);
+void	exit_child(t_pipex *px, char *err);
 
 //free_bonus.c
 void	free_parent(t_pipex *px);
+void	free_child(t_pipex *px);
 
 //init_bonus.c
 void	init_pipex(t_pipex *px, int argc, char *argv[], char *envp[]);
