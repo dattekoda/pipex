@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:35:49 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/15 13:49:55 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/16 10:03:46 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	msg(char *err, int status)
 void	err_msg(char *err)
 {
 	ft_putendl_fd(err, STDERR_FILENO);
-	exit(1);
+	exit(FAILURE);
 }
 
 void	exit_parent(t_pipex *px, char *err, int status)

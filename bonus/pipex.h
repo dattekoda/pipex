@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 13:25:44 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/15 14:58:22 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/16 11:51:43 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,21 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <stdbool.h>
 # include "../libft/includes/libft.h"
 
+# define MIN_HERE_DOC_ARGC 6
+# define MIN_NORMAL_ARGC 5
+# define FAILURE 1
+
 # define HERE_DOC_FILE ".here_doc"
-# define HERE_DOC "pipe heredoc> "
-# define ERR_INPUT "Invalid number of arguments.\n"
+# define HERE_DOC "heredoc> "
+# define PIPE "pipe "
+
+# define ERR_INPUT "Invalid number of arguments."
 # define ERR_ACCESS "access"
 # define ERR_OPEN "open"
+# define ERR_CLOSE "close"
 # define ERR_MALLOC "malloc"
 # define ERR_PIPE "pipe"
 # define ERR_EXECVE "execve"
@@ -47,13 +55,14 @@ typedef struct s_input
 typedef struct s_pipex
 {
 	t_input	*input;
-	int		here_doc; //1: on 0: off
+	bool	here_doc; //1: on 0: off
 	int		cmds_num; //here_doc :may change
 	int		in_fd;
 	int		out_fd;
 	int		pipes_size; // 2 * (cmd_count - 1)
 	int		*pipes; //malloc
 	t_cmd	*cmd; //malloc
+	char	*here_doc_msg;
 	char	**path_op; //split
 	pid_t	pid;
 }	t_pipex;
@@ -76,5 +85,7 @@ void	init_pipex(t_pipex *px, int argc, char *argv[], char *envp[]);
 
 //utils_bonus.c
 void	free_split(char **split);
+void	here_doc_msg(t_pipex *px);
+int		args_num(char *arg, t_pipex *px);
 
 #endif

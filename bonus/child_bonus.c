@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:40:58 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/15 16:08:16 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/16 11:59:36 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	manage_dup2(t_pipex *px, int i);
 static void	manage_pipe(t_pipex *px, int i);
-static void	open_output(t_pipex *px);
-static void	wait_child(t_pipex *px, int i);
+static void	open_in_out(t_pipex *px, int i);
+// static void	wait_child(t_pipex *px, int i);
 
 void	child_pipex(t_pipex *px)
 {
@@ -28,14 +28,13 @@ void	child_pipex(t_pipex *px)
 		px->pid = fork();
 		if (px->pid == 0)
 		{
-			if (i == px->cmds_num - 1)
-				open_output(px);
+			open_in_out(px, i);
 			manage_dup2(px, i);
 			if (execve(px->cmd[i].path, px->cmd[i].argv, px->input->envp) < 0)
-				exit_child(px, ERR_EXECVE, 1);
+				exit_child(px, ERR_EXECVE, FAILURE);
 		}
-		else
-			wait_child(px, i);
+		// else
+		// 	wait_child(px, i);
 	}
 	close_child(px);
 }
@@ -67,23 +66,39 @@ static void	manage_pipe(t_pipex *px, int i)
 {
 	if (i != px->cmds_num - 1)
 		if (pipe(&px->pipes[2 * i]) < 0)
-			exit_child(px, ERR_PIPE, 1);
+			exit_child(px, ERR_PIPE, FAILURE);
 	if (i == 1)
 		close(px->in_fd);
 }
 
-static void	open_output(t_pipex *px)
+static void open_in_out(t_pipex *px, int i)
 {
-	px->out_fd = open(px->input->argv[px->input->argc - 1],
-			O_WRONLY | O_CREAT | (O_TRUNC) * !(px->here_doc), 644);
-	if (px->out_fd == -1)
-		exit_child(px, ERR_OPEN, 1);
+	int	flags;
+
+	if (i == 0)
+	{
+		if (px->here_doc)
+			px->in_fd = open(HERE_DOC_FILE, O_RDONLY);
+		else
+			px->in_fd = open(px->input->argv[1], O_RDONLY);
+		if (px->in_fd < 0)
+			exit_child(px, ERR_OPEN, FAILURE);
+	}
+	if (i == px->cmds_num - 1)
+	{
+		flags = O_RDWR | O_CREAT;
+		if (!px->here_doc)
+			flags |= O_TRUNC;
+		px->out_fd = open(px->input->argv[px->input->argc - 1], flags, 0644);
+		if (px->out_fd == -1)
+			exit_child(px, ERR_OPEN, FAILURE);
+	}
 }
 
-static void	wait_child(t_pipex *px, int i)
-{
-	if (i != px->cmds_num - 1)
-		close(px->pipes[2 * i + 1]);
-	if (i != 0)
-		close(px->pipes[2 * i - 2]);
-}
+// static void	wait_child(t_pipex *px, int i)
+// {
+// 	if (i != px->cmds_num - 1)
+// 		close(px->pipes[2 * i + 1]);
+// 	if (i != 0)
+// 		close(px->pipes[2 * i - 2]);
+// }
