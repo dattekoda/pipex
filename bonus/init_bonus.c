@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:33:34 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/16 16:26:31 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/16 20:56:16 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ static void	ready_init(t_pipex *px, int argc, char *argv[], char *envp[])
 	px->input->envp = envp;
 	px->input->argv_cmd = argv + px->here_doc + 2;
 	px->cmds_num = argc - 3 - px->here_doc;
-	if (px->here_doc)
-		get_stdin(px, argv);
 	px->path_op = NULL;
 	while (*envp)
 	{
@@ -118,5 +116,7 @@ static void	ready_init(t_pipex *px, int argc, char *argv[], char *envp[])
 		envp++;
 	}
 	if (!px->path_op)
-		exit_parent(px, ERR_MALLOC, 1);
+		exit_parent(px, ERR_MALLOC, FAILURE);
+	if (px->here_doc)
+		get_stdin(px, argv);
 }

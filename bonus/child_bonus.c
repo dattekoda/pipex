@@ -6,11 +6,14 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:40:58 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/16 16:30:44 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:23:31 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+#define OPEN_PIPE 1
+#define CLOSE_PIPE 0
 
 static void	manage_dup2(t_pipex *px, int i);
 static void	manage_pipe(t_pipex *px, int i, bool mode);
@@ -23,7 +26,7 @@ void	child_pipex(t_pipex *px)
 	i = -1;
 	while (++i < px->cmds_num)
 	{
-		manage_pipe(px, i, 1);
+		manage_pipe(px, i, OPEN_PIPE);
 		px->pid = fork();
 		if (px->pid == 0)
 		{
@@ -33,7 +36,7 @@ void	child_pipex(t_pipex *px)
 				exit_child(px, ERR_EXECVE, FAILURE);
 		}
 		else
-			manage_pipe(px, i, 0);
+			manage_pipe(px, i, CLOSE_PIPE);
 	}
 	waitpid(px->pid, &px->status, 0);
 	if (!WIFEXITED(px->status))
@@ -71,8 +74,6 @@ static void	manage_pipe(t_pipex *px, int i, bool mode)
 		if (pipe(&px->pipes[2 * i]) < 0)
 			exit_child(px, ERR_PIPE, FAILURE);
 	}
-	else if (mode && i == 1)
-		close(px->in_fd);
 	if (!mode && i != px->cmds_num - 1)
 		close(px->pipes[2 * i + 1]);
 	else if (!mode && i != 0)
@@ -91,7 +92,7 @@ static void open_in_out(t_pipex *px, int i)
 			px->in_fd = open(px->input->argv[1], O_RDONLY);
 		if (px->here_doc && px->in_fd < 0)
 			exit_child(px, HERE_DOC_FILE, FAILURE);
-		else if (px->in_fd < 0)
+		else if (px->here_doc && px->in_fd < 0)
 			exit_child(px, px->input->argv[1], O_RDONLY);
 	}
 	if (i == px->cmds_num - 1)
