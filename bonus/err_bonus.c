@@ -6,22 +6,22 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:35:49 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/16 10:03:46 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:09:09 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+void	err(char *err, int status)
+{
+	ft_putendl_fd(err, STDERR_FILENO);
+	exit(status);
+}
+
 int	msg(char *err, int status)
 {
 	perror(err);
 	return (status);
-}
-
-void	err_msg(char *err)
-{
-	ft_putendl_fd(err, STDERR_FILENO);
-	exit(FAILURE);
 }
 
 void	exit_parent(t_pipex *px, char *err, int status)

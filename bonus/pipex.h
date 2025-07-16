@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 13:25:44 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/16 11:51:43 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/16 15:27:23 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@
 # define MIN_HERE_DOC_ARGC 6
 # define MIN_NORMAL_ARGC 5
 # define FAILURE 1
+# define NOT_FOUND 127
 
 # define HERE_DOC_FILE ".here_doc"
 # define HERE_DOC "heredoc> "
 # define PIPE "pipe "
 
+# define ERR_CMD_NOT_FOUND "command not found"
 # define ERR_INPUT "Invalid number of arguments."
 # define ERR_ACCESS "access"
 # define ERR_OPEN "open"
@@ -36,6 +38,7 @@
 # define ERR_MALLOC "malloc"
 # define ERR_PIPE "pipe"
 # define ERR_EXECVE "execve"
+# define ERR_GNL "gnl"
 
 typedef struct s_cmd
 {
@@ -59,6 +62,7 @@ typedef struct s_pipex
 	int		cmds_num; //here_doc :may change
 	int		in_fd;
 	int		out_fd;
+	int		status;
 	int		pipes_size; // 2 * (cmd_count - 1)
 	int		*pipes; //malloc
 	t_cmd	*cmd; //malloc
@@ -71,8 +75,8 @@ typedef struct s_pipex
 void	child_pipex(t_pipex *px);
 
 //err_bonus.c
+void	err(char *err, int status);
 int		msg(char *err, int status);
-void	err_msg(char *err);
 void	exit_parent(t_pipex *px, char *err, int staus);
 void	exit_child(t_pipex *px, char *err, int staus);
 

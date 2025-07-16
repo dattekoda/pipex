@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:33:34 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/16 11:52:05 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/16 16:26:31 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	get_stdin(t_pipex *px, char **argv)
 		ft_putstr_fd(px->here_doc_msg, STDOUT_FILENO);
 		gnl = ft_get_next_line(STDIN_FILENO, &line);
 		if (gnl < 0)
-			err_msg("gnl");
+			msg(ERR_GNL, FAILURE);
 		if (!ft_strncmp(px->input->limiter, line, ft_strlen(line) - 1))
 			break ;
 		ft_putstr_fd(line, px->in_fd);
@@ -74,8 +74,8 @@ static void	get_path(t_pipex *px)
 			}
 			free(path);
 		}
-		if (!px->path_op[j])
-			exit_parent(px, ERR_ACCESS, FAILURE);
+		if (!px->cmd[j].path)
+			exit_parent(px, px->cmd[j].argv[0], NOT_FOUND);
 	}
 }
 
@@ -107,6 +107,7 @@ static void	ready_init(t_pipex *px, int argc, char *argv[], char *envp[])
 	px->cmds_num = argc - 3 - px->here_doc;
 	if (px->here_doc)
 		get_stdin(px, argv);
+	px->path_op = NULL;
 	while (*envp)
 	{
 		if (!ft_strncmp("PATH=", *envp, 5))

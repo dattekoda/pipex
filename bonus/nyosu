@@ -1,0 +1,29 @@
+/*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   Created: 2025/07/15 13:25:44 by khanadat          #+#    #+#             */
+/*   Updated: 2025/07/16 15:27:23 by khanadat         ###   ########.fr       */
+# include <sys/wait.h>
+# define ERR_CMD_NOT_FOUND "command not found"
+# define ERR_INPUT "Invalid number of arguments."
+# define ERR_ACCESS "access"
+# define ERR_MALLOC "malloc"
+	char	**argv; //split
+	char	*path;
+	int		argc;
+	char	*limiter;
+	char	**argv;
+	char	**envp;
+	char	**argv_cmd;//cmd pointer which starts
+	int		cmds_num; //here_doc :may change
+	int		status;
+	int		*pipes; //malloc
+	t_cmd	*cmd; //malloc
+	char	*here_doc_msg;
+	char	**path_op; //split
+void	err(char *err, int status);
+int		msg(char *err, int status);
+void	exit_parent(t_pipex *px, char *err, int staus);
+void	exit_child(t_pipex *px, char *err, int staus);
+void	free_parent(t_pipex *px);
+void	init_pipex(t_pipex *px, int argc, char *argv[], char *envp[]);
+void	free_split(char **split);
+int		args_num(char *arg, t_pipex *px);
