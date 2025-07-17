@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:40:58 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 12:06:33 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:49:30 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ static void	open_in_out(t_pipex *px, int i)
 	if (i == 0)
 	{
 		if (px->here_doc)
-			px->in_fd = open(HERE_DOC_FILE, O_RDONLY);
+			px->in_fd = open(px->here_doc_file, O_RDONLY);
 		else
 			px->in_fd = open(px->input->argv[1], O_RDONLY);
 		if (px->here_doc && px->in_fd < 0)
-			exit_child(px, HERE_DOC_FILE, FAILURE);
+			exit_child(px, px->here_doc_file, FAILURE);
 		else if (!px->here_doc && px->in_fd < 0)
 			exit_child(px, px->input->argv[1], O_RDONLY);
 	}

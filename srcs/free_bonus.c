@@ -6,13 +6,13 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:20:40 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/16 11:05:23 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:51:17 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	free_parent(t_pipex *px)
+void	free_pipex(t_pipex *px)
 {
 	int	i;
 
@@ -35,8 +35,9 @@ void	free_parent(t_pipex *px)
 	}
 	if (px->here_doc)
 	{
+		unlink(px->here_doc_file);
+		free(px->here_doc_file);
 		free(px->here_doc_msg);
-		unlink(HERE_DOC_FILE);
 	}
 }
 

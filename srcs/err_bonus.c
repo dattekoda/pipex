@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:35:49 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 10:33:16 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:44:09 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ void	exit_parent(t_pipex *px, char *err, int status)
 	}
 	else
 		perror(err);
-	free_parent(px);
+	free_pipex(px);
 	exit(status);
 }
 
 void	exit_child(t_pipex *px, char *err, int status)
 {
 	close_child(px);
+	free_pipex(px);
 	exit(msg(err, status));
 }

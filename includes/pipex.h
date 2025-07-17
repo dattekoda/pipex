@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 13:25:44 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 10:30:28 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:48:06 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_pipex
 	int		pipes_size; // 2 * (cmd_count - 1)
 	int		*pipes; //malloc
 	t_cmd	*cmd; //malloc
+	char	*here_doc_file;
 	char	*here_doc_msg;
 	char	**path_op; //split
 	pid_t	pid;
@@ -81,7 +82,7 @@ void	exit_parent(t_pipex *px, char *err, int staus);
 void	exit_child(t_pipex *px, char *err, int staus);
 
 //free_bonus.c
-void	free_parent(t_pipex *px);
+void	free_pipex(t_pipex *px);
 void	close_child(t_pipex *px);
 
 //init_bonus.c

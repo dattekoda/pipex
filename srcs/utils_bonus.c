@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 16:45:57 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/16 11:23:02 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:34:52 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ void	here_doc_msg(t_pipex *px)
 	px->here_doc_msg = msg;
 }
 
-//count min_argc 
+//count min_argc
 int	args_num(char *arg, t_pipex *px)
 {
 	if (arg && !ft_strncmp("here_doc", arg, 9))
 	{
 		px->here_doc = 1;
-		if (!access(HERE_DOC_FILE, F_OK))
-			unlink(HERE_DOC_FILE);
+		if (!access(px->here_doc_file, F_OK))
+			unlink(px->here_doc_file);
 		return (MIN_HERE_DOC_ARGC);
 	}
 	px->here_doc = 0;

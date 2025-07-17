@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:33:34 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 10:29:39 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:49:30 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	get_stdin(t_pipex *px, char **argv)
 
 	gnl = 1;
 	px->input->limiter = argv[2];
-	px->in_fd = open(HERE_DOC_FILE, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	px->in_fd = open(px->here_doc_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (px->in_fd < 0)
 		exit(msg(ERR_OPEN, FAILURE));
 	here_doc_msg(px);
@@ -95,6 +95,8 @@ static void	get_cmds(t_pipex *px)
 		px->cmd[i].argv = ft_split(px->input->argv_cmd[i], ' ');
 		if (!px->cmd[i].argv)
 			exit_parent(px, ERR_MALLOC, FAILURE);
+		else if (!px->cmd[i].argv[0])
+			exit_parent(px, "", ERRNO_CMD_NOT_FOUND);
 	}
 }
 
