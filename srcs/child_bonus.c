@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:40:58 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 19:49:30 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:24:52 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "utils.h"
 
 #define OPEN_PIPE 1
 #define CLOSE_PIPE 0

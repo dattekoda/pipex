@@ -6,11 +6,26 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 16:45:57 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 20:34:52 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:22:18 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "utils.h"
+
+//count min_argc
+int	args_num(char *arg, t_pipex *px)
+{
+	if (arg && !ft_strncmp("here_doc", arg, 9))
+	{
+		px->here_doc = 1;
+		px->here_doc_file = ft_strdup(HERE_DOC_FILE);
+		if (!access(px->here_doc_file, F_OK))
+			unlink(px->here_doc_file);
+		return (MIN_HERE_DOC_ARGC);
+	}
+	px->here_doc = 0;
+	return (MIN_NORMAL_ARGC);
+}
 
 void	free_split(char **split)
 {
@@ -22,38 +37,22 @@ void	free_split(char **split)
 	free(split);
 }
 
-void	here_doc_msg(t_pipex *px)
-{
-	char	*msg;
-	char	*tmp;
-	int		i;
+// void	get_random_name(t_pipex *px)
+// {
+// 	char	*name;
+// 	char	*tmp;
+// 	int		i;
 
-	msg = ft_strdup(HERE_DOC);
-	i = -1;
-	while (msg && ++i < px->cmds_num - 1)
-	{
-		tmp = msg;
-		msg = ft_strjoin(PIPE, msg);
-		free(tmp);
-	}
-	if (!msg)
-		exit_parent(px, ERR_MALLOC, FAILURE);
-	px->here_doc_msg = msg;
-}
-
-//count min_argc
-int	args_num(char *arg, t_pipex *px)
-{
-	if (arg && !ft_strncmp("here_doc", arg, 9))
-	{
-		px->here_doc = 1;
-		if (!access(px->here_doc_file, F_OK))
-			unlink(px->here_doc_file);
-		return (MIN_HERE_DOC_ARGC);
-	}
-	px->here_doc = 0;
-	return (MIN_NORMAL_ARGC);
-}
+// 	i = INT_MAX;
+// 	while (++i != INT_MAX)
+// 	{
+// 		tmp = ft_strdup(".");
+// 		if (!tmp)
+// 			break ;
+// 		name = ft_strjoin(tmp, ft_itoa(i));
+		
+// 	}
+// }
 
 // //  valgrind cc utils_bonus.c err_bonus.c free_bonus.c ../libft/libft.a
 // int	main(void)

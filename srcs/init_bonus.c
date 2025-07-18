@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:33:34 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 19:49:30 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:52:31 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "utils.h"
 
 static void	get_stdin(t_pipex *px, char **argv);
 static void	get_path(t_pipex *px);
@@ -19,6 +19,11 @@ static void	ready_init(t_pipex *px, int argc, char *argv[], char *envp[]);
 
 void	init_pipex(t_pipex *px, int argc, char *argv[], char *envp[])
 {
+	t_input	input;
+
+	if (argc < args_num(argv[1], px))
+		err(ERR_INPUT, FAILURE);
+	px->input = &input;
 	ready_init(px, argc, argv, envp);
 	get_cmds(px);
 	get_path(px);
@@ -40,8 +45,9 @@ static void	get_stdin(t_pipex *px, char **argv)
 		ft_putstr_fd(px->here_doc_msg, STDOUT_FILENO);
 		gnl = ft_get_next_line(STDIN_FILENO, &line);
 		if (gnl < 0)
-			msg(ERR_GNL, FAILURE);
-		if (!ft_strncmp(px->input->limiter, line, ft_strlen(line) - 1))
+			exit_parent(px, ERR_MALLOC, FAILURE);
+		if (!ft_strncmp(px->input->limiter, line, ft_strlen(line) - 1)
+			|| gnl == 0)
 			break ;
 		ft_putstr_fd(line, px->in_fd);
 		free(line);
@@ -55,7 +61,6 @@ static void	get_stdin(t_pipex *px, char **argv)
 static void	get_path(t_pipex *px)
 {
 	char	*path;
-	char	*tmp;
 	int		i;
 	int		j;
 
@@ -65,9 +70,8 @@ static void	get_path(t_pipex *px)
 		i = -1;
 		while (px->path_op[++i])
 		{
-			tmp = ft_strjoin(px->path_op[i], "/");
-			path = ft_strjoin(tmp, px->cmd[j].argv[0]);
-			if (!(free(tmp), access(path, X_OK)))
+			path = ft_strjoin(px->path_op[i], px->cmd[j].argv[0]);
+			if (!access(path, X_OK))
 			{
 				px->cmd[j].path = path;
 				break ;
@@ -75,7 +79,7 @@ static void	get_path(t_pipex *px)
 			free(path);
 		}
 		if (!px->cmd[j].path)
-			exit_parent(px, px->cmd[j].argv[0], ERRNO_CMD_NOT_FOUND);
+			exit_parent(px, px->cmd[j].argv[0], NOT_FOUND);
 	}
 }
 
@@ -96,7 +100,7 @@ static void	get_cmds(t_pipex *px)
 		if (!px->cmd[i].argv)
 			exit_parent(px, ERR_MALLOC, FAILURE);
 		else if (!px->cmd[i].argv[0])
-			exit_parent(px, "", ERRNO_CMD_NOT_FOUND);
+			exit_parent(px, "", NOT_FOUND);
 	}
 }
 
@@ -108,17 +112,7 @@ static void	ready_init(t_pipex *px, int argc, char *argv[], char *envp[])
 	px->input->argv_cmd = argv + px->here_doc + 2;
 	px->cmds_num = argc - 3 - px->here_doc;
 	px->path_op = NULL;
-	while (*envp)
-	{
-		if (!ft_strncmp("PATH=", *envp, 5))
-		{
-			px->path_op = ft_split(*envp + 5, ':');
-			break ;
-		}
-		envp++;
-	}
-	if (!px->path_op)
-		exit_parent(px, ERR_MALLOC, FAILURE);
+	get_path_op(px, envp);
 	if (px->here_doc)
 		get_stdin(px, argv);
 }

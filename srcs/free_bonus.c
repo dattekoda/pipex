@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:20:40 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 19:51:17 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:25:08 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "utils.h"
 
 void	free_pipex(t_pipex *px)
 {

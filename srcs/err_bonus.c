@@ -6,11 +6,11 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:35:49 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/17 19:44:09 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:25:04 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "utils.h"
 
 void	err(char *err, int status)
 {
@@ -26,7 +26,7 @@ int	msg(char *err, int status)
 
 void	exit_parent(t_pipex *px, char *err, int status)
 {
-	if (status == ERRNO_CMD_NOT_FOUND)
+	if (status == NOT_FOUND)
 	{
 		ft_putstr_fd(ERR_CMD_NOT_FOUND, STDERR_FILENO);
 		ft_putendl_fd(err, STDERR_FILENO);
