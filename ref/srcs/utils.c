@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 11:16:28 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:40:31 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:25:06 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,40 @@ void	init_pipex(t_pipex *px, int argc, char *argv[], char *envp[])
 	px->input->argc = argc;
 	px->input->argv = argv;
 	px->input->envp = envp;
+	px->in_fd = -1;
+	px->out_fd = -1;
 	px->cmds_num = 2;
 	px->cmd = NULL;
 	px->pid = -1;
 }
 
-void	free_split(char **sp)
+int	safe_close(int *fd)
 {
-	char	**_sp;
-
-	_sp = sp;
-	while (*_sp)
-		free(*_sp++);
-	free(sp);
+	if (*fd < 0)
+		return (0);
+	if (close(*fd) < 0)
+	{
+		perror("safe close");
+		return (-1);
+	}
+	*fd = -1;
+	return (0);
 }
 
-// char	**get_argv(char *str)
-// {
-// }
+int	close_pipe(int *arr)
+{
+	if (safe_close(arr) || safe_close(arr + 1))
+		return (-1);
+	return (0);
+}
+
+void	set_exec(t_pipex *px, int *size, int **arr, pid_t **pid_arr)
+{
+	*size = (px->cmds_num - 1) * 2;
+	*arr = (int *)ft_calloc(*size, sizeof(int));
+	if (!*arr)
+		exit_pipex(px, ERR_MALLOC, FAILURE);
+	*pid_arr = (pid_t *)ft_calloc(px->cmds_num, sizeof(size_t));
+	if (!*pid_arr)
+		exit_pipex(px, ERR_MALLOC, FAILURE);
+}

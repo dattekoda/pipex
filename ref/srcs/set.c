@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 10:59:21 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:58:16 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/19 20:21:26 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static void	set_cmd(t_pipex *px);
 
 void	set_pipex(t_pipex *px)
 {
-	px->in_fd = open(px->input->argv[1], O_RDONLY);
-	px->out_fd = open(px->input->argv[px->input->argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	set_cmd(px);
 }
 
@@ -81,11 +79,15 @@ static void	get_path(t_pipex *px, char **env_path, t_cmd *cmd)
 		tmp = ft_strjoin(env_path[i], cmd->argv[0]);
 		if (!tmp)
 			exit_pipex(px, ERR_MALLOC, FAILURE);
-		if (!access(tmp, X_OK))
+		if (!access(tmp, F_OK))
 			break ;
 		free(tmp);
 	}
-	if (!env_path[i])
-		exit_pipex(px, cmd->argv[0], ERRNO_CMD);
-	cmd->path = tmp;
+	if (!access(tmp, X_OK))
+		cmd->path = tmp;
+	else
+	{
+		perror(cmd->argv[0]);
+		free(tmp);
+	}
 }

@@ -9,7 +9,8 @@ LIBFT_A := $(LIBFT_DIR)/libft.a
 
 SRCS	:=	srcs/pipex.c srcs/utils.c \
 			srcs/err.c srcs/free.c \
-			srcs/main.c srcs/set.c
+			srcs/main.c srcs/set.c \
+			srcs/exec.c
 
 BONUS	:=	bonus/pipex_bonus.c bonus/child_bonus.c \
 			bonus/err_bonus.c bonus/free_bonus.c \

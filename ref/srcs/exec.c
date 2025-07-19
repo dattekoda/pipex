@@ -6,102 +6,103 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 21:02:14 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/19 10:59:49 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:25:52 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-typedef struct s_pipe
+static void	child(t_pipex *px, int *arr, int i);
+static void	parent(t_pipex *px, int *arr, int i);
+static void	set_fd(t_pipex *px, int *arr, int i);
+static void	dup_fd(t_pipex *px, int *arr, int i);
+
+void	exec_pipex(t_pipex *px)
 {
-	int	*pipe;
-	int	pipe_size;
-	int	read_fd;
-	int	write_fd;
-}	t_pipe;
+	int		size;
+	int		i;
+	int		*arr;
+	pid_t	*pid_arr;
 
-int		set_pipe(int *pipe_array, int pipe_size);
-void	child(t_pipex *px, t_pipe pipe);
-void	dup_fd(t_pipex *px, int *pipe_array, int pipe_size, int i);
-void	parent(t_pipex *px, int *pipe_array, int pipe_size, int i);
-
-void	exec(t_pipex *px)
-{
-	int	*pipe_array;
-	int	pipe_size;
-	int	i;
-
-	pipe_size = (px->cmds_num - 1) * 2;
-	pipe_array = (int *)malloc(sizeof(int) * (pipe_size));
-	if (!pipe_array)
-		exit_pipex(px, ERR_MALLOC, FAILURE);
-	if (set_pipe(&pipe_array, pipe_size) < 0)
-		exit_pipex(px, ERR_PIPE, FAILURE);
+	set_exec(px, &size, &arr, &pid_arr);
+	i = -1;
 	while (++i < px->cmds_num)
 	{
-		px->pid = fork();
-		if (px->pid == 0)
-			child(px, (t_pipe){pipe_array});
+		set_fd(px, arr, i);
+		pid_arr[i] = fork();
+		if (pid_arr[i] == 0)
+			child(px, arr, i);
 		else
-			parent(px, pipe_array, pipe_size, i);
+			parent(px, arr, i);
 	}
-	waitpid(px->pid, &px->status, 0);
-}
-
-int	set_pipe(int *pipe_array, int pipe_size)
-{
-	int	i;
-
 	i = -1;
-	while (++i < pipe_size)
-	{
-		if (pipe(&pipe_array[2 * i]) < 0)
-		{
-			while (0 <= i)
-				close(pipe_array[i--]);
-			return (-1);
-		}
-	}
-	return (0);
+	while (++i < px->cmds_num)
+		waitpid(pid_arr[i], &px->status, 0);
+	free(arr);
+	free(pid_arr);
 }
 
-void	child(t_pipex *px, t_pipe pipe)
+static void	child(t_pipex *px, int *arr, int i)
 {
 	t_cmd	cmd;
-	int		j;
 
 	cmd = px->cmd[i];
-	dup_fd(px, pipe_array, pipe_size, i);
-	j = -1;
-	while (++j < pipe_size)
-		if (j != 2 * i - 2 && j != 2 * i + 1)
-			close(pipe_array[j]);
-	if (execve(cmd.path, cmd.argv, px->input->envp) < 0)
-		exit_pipex(px, cmd.argv[0], FAILURE);
+	if (i != 0 && safe_close(&arr[2 * i - 1]))
+		exit_pipex(px, ERR_CLOSE, FAILURE);
+	if (i != px->cmds_num - 1 && safe_close(&arr[2 * i]))
+		exit_pipex(px, ERR_CLOSE, FAILURE);
+	dup_fd(px, arr, i);
+	if (execve(cmd.path, cmd.argv, px->input->envp))
+		exit_pipex(px, cmd.argv[0], ERRNO_CMD);
 }
 
-void	dup_fd(t_pipex *px, int *pipe_array, int pipe_size, int i)
+static void	parent(t_pipex *px, int *arr, int i)
 {
-	if (px->in_fd < 0)
-		
+	if (i == 0 && safe_close(&px->in_fd))
+		exit_pipex(px, ERR_CLOSE, FAILURE);
+	if (i != 0 && safe_close(&arr[2 * i - 2]))
+		exit_pipex(px, ERR_CLOSE, FAILURE);
+	if (i != px->cmds_num - 1 && safe_close(&arr[2 * i + 1]))
+		exit_pipex(px, ERR_CLOSE, FAILURE);
+	if (i == px->cmds_num - 1 && safe_close(&px->out_fd))
+		exit_pipex(px, ERR_CLOSE, FAILURE);
+}
+
+static void	set_fd(t_pipex *px, int *arr, int i)
+{
+	if (i == 0)
+		px->in_fd = open(px->input->argv[1], O_RDONLY);
+	if (1 < i && close_pipe(&arr[2 * i - 4]))
+		exit_pipex(px, ERR_CLOSE, FAILURE);
+	if (i != px->cmds_num - 1 && pipe(&arr[2 * i]) < 0)
+		exit_pipex(px, ERR_PIPE, FAILURE);
+	if (i == px->cmds_num - 1)
+		px->out_fd = open(px->input->argv[px->input->argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
+}
+
+static void	dup_fd(t_pipex *px, int *arr, int i)
+{
 	if (i == 0)
 	{
-		close(px->out_fd);
-		dup2(px->in_fd, STDIN_FILENO);
-		dup2(pipe_array[1], STDOUT_FILENO);
+		if (dup2(px->in_fd, STDIN_FILENO) == -1 ||
+			dup2(arr[1], STDOUT_FILENO) == -1)
+			exit_pipex(px, ERR_DUP2, FAILURE);
+		if (safe_close(&px->in_fd) || safe_close(&arr[1]))
+			exit_pipex(px, ERR_CLOSE, FAILURE);
 		return ;
 	}
 	if (i == px->cmds_num - 1)
 	{
-		close(px->in_fd);
-		dup2(pipe_array[2 * i - 2], STDIN_FILENO);
-		dup2(px->out_fd, STDOUT_FILENO);
+		if (dup2(arr[2 * i - 2], STDIN_FILENO) == -1 ||
+			dup2(px->out_fd, STDOUT_FILENO) == -1)
+			exit_pipex(px, ERR_DUP2, FAILURE);
+		if (safe_close(&arr[2 * i - 2]) || safe_close(&px->out_fd))
+			exit_pipex(px, ERR_CLOSE, FAILURE);
 		return ;
 	}
-	close(px->in_fd);
-	close(px->out_fd);
-	dup2(pipe_array[2 * i - 2], STDIN_FILENO);
-	dup2(pipe_array[2 * i + 1], STDOUT_FILENO);
+	if (dup2(arr[2 * i - 2], STDIN_FILENO) == -1 ||
+		dup2(arr[2 * i + 1], STDOUT_FILENO) == -1)
+		exit_pipex(px, ERR_DUP2, FAILURE);
+	if (safe_close(&arr[2 * i - 2]) || safe_close(&arr[2 * i + 1]))
+		exit_pipex(px, ERR_CLOSE, FAILURE);
 }
-
-void	parent(t_pipex *px, int *pipe_array, int pipe_size, int i);

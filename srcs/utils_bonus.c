@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 16:45:57 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 09:22:18 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:06:14 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	args_num(char *arg, t_pipex *px)
 		if (!access(px->here_doc_file, F_OK))
 			unlink(px->here_doc_file);
 		return (MIN_HERE_DOC_ARGC);
-	}
+	} 
 	px->here_doc = 0;
 	return (MIN_NORMAL_ARGC);
 }
