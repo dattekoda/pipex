@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 11:29:20 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:35:07 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/25 12:04:42 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:32:43 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "../includes/libft.h"
 
-void	free_pipex(t_pipex *px)
+size_t	ft_strlen(const char *s)
 {
-	int	i;
+	const char	*h;
 
-	close(px->in_fd);
-	close(px->out_fd);
-	i = -1;
-	free(px->input);
-	while (px->cmd && ++i < px->cmds_num)
-	{
-		free_split(px->cmd[i].argv);
-		free(px->cmd[i].path);
-	}
+	h = s;
+	while (*s)
+		s++;
+	return (s - h);
 }
+
+/*
+#include <stdio.h>
+
+int	main(int argc, char* argv[])
+{
+	if (argc == 1) return (0);
+	printf("%d\n", ft_strlen(argv[1]));
+	return (0);
+}
+*/

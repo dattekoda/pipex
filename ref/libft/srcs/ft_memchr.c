@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 11:29:20 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:35:07 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/25 12:40:13 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:33:12 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "../includes/libft.h"
 
-void	free_pipex(t_pipex *px)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	int	i;
+	unsigned char	*t;
 
-	close(px->in_fd);
-	close(px->out_fd);
-	i = -1;
-	free(px->input);
-	while (px->cmd && ++i < px->cmds_num)
+	t = (unsigned char *) s;
+	while (n--)
 	{
-		free_split(px->cmd[i].argv);
-		free(px->cmd[i].path);
+		if (*t == (unsigned char) c)
+			return ((void *) t);
+		t++;
 	}
+	return (NULL);
 }

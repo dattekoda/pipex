@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 11:29:20 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:35:07 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/26 07:50:50 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:32:07 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "../includes/libft.h"
 
-void	free_pipex(t_pipex *px)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	int	i;
+	unsigned char	*res;
 
-	close(px->in_fd);
-	close(px->out_fd);
-	i = -1;
-	free(px->input);
-	while (px->cmd && ++i < px->cmds_num)
-	{
-		free_split(px->cmd[i].argv);
-		free(px->cmd[i].path);
-	}
+	if (size && (nmemb * size) / size != nmemb)
+		return (NULL);
+	res = malloc(nmemb * size);
+	if (res)
+		ft_bzero(res, nmemb * size);
+	return (res);
 }

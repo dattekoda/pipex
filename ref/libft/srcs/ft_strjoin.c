@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 11:29:20 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:35:07 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/27 06:02:28 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:32:39 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "../includes/libft.h"
 
-void	free_pipex(t_pipex *px)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int	i;
+	char	*res;
+	size_t	len1;
+	size_t	len2;
+	size_t	i;
 
-	close(px->in_fd);
-	close(px->out_fd);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	res = malloc(len1 + len2 + 1);
+	if (!res)
+		return (NULL);
 	i = -1;
-	free(px->input);
-	while (px->cmd && ++i < px->cmds_num)
-	{
-		free_split(px->cmd[i].argv);
-		free(px->cmd[i].path);
-	}
+	while (++i < len1)
+		res[i] = s1[i];
+	i = -1;
+	while (++i < len2)
+		res[i + len1] = s2[i];
+	res[len1 + len2] = '\0';
+	return (res);
 }

@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 11:29:20 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:35:07 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/26 04:57:31 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:33:14 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "../includes/libft.h"
 
-void	free_pipex(t_pipex *px)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int	i;
+	size_t			i;
+	unsigned char	*t1;
+	unsigned char	*t2;
 
-	close(px->in_fd);
-	close(px->out_fd);
-	i = -1;
-	free(px->input);
-	while (px->cmd && ++i < px->cmds_num)
+	t1 = (unsigned char *)s1;
+	t2 = (unsigned char *)s2;
+	i = 0;
+	while (i < n)
 	{
-		free_split(px->cmd[i].argv);
-		free(px->cmd[i].path);
+		if (t1[i] != t2[i])
+			return (t1[i] - t2[i]);
+		i++;
 	}
+	return (0);
 }

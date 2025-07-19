@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 11:29:20 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:35:07 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/25 07:14:42 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:33:04 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "../includes/libft.h"
 
-void	free_pipex(t_pipex *px)
+void	ft_bzero(void *s, size_t n)
 {
-	int	i;
-
-	close(px->in_fd);
-	close(px->out_fd);
-	i = -1;
-	free(px->input);
-	while (px->cmd && ++i < px->cmds_num)
-	{
-		free_split(px->cmd[i].argv);
-		free(px->cmd[i].path);
-	}
+	ft_memset(s, 0, n);
 }
+
+/*
+#include <stdio.h>
+
+int main(void)
+{
+    char   ohayo[10];
+    ft_bzero(ohayo, 5);
+    printf("%s\n", ohayo);
+    return 0;
+}*/

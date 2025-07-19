@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 11:29:20 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 20:35:07 by khanadat         ###   ########.fr       */
+/*   Created: 2025/04/25 06:47:17 by khanadat          #+#    #+#             */
+/*   Updated: 2025/06/23 20:32:21 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "../includes/libft.h"
 
-void	free_pipex(t_pipex *px)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	int	i;
+	unsigned char	*p;
 
-	close(px->in_fd);
-	close(px->out_fd);
-	i = -1;
-	free(px->input);
-	while (px->cmd && ++i < px->cmds_num)
-	{
-		free_split(px->cmd[i].argv);
-		free(px->cmd[i].path);
-	}
+	p = (unsigned char *) s;
+	while (n--)
+		*p++ = (unsigned char) c;
+	return (s);
 }
+
+/*
+#include <stdio.h>
+
+int main(void) {
+    char   ohayo[10];
+    ft_memset(ohayo, 'a', 5);
+    printf("%s\n", ohayo);
+    return 0;
+}*/

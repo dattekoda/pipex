@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 11:16:28 by khanadat          #+#    #+#             */
-/*   Updated: 2025/07/18 16:23:44 by khanadat         ###   ########.fr       */
+/*   Updated: 2025/07/18 20:40:31 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	init_pipex(t_pipex *px, int argc, char *argv[], char *envp[])
 {
-	t_input	input;
+	t_input	*input;
 
 	if (argc != 5)
 		err(ERR_INPUT, FAILURE);
-	px->input = &input;
+	input = (t_input *)malloc(sizeof(t_input));
+	if (!input)
+		err(ERR_MALLOC, FAILURE);
+	px->input = input;
 	px->input->argc = argc;
 	px->input->argv = argv;
 	px->input->envp = envp;
